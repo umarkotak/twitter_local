@@ -3,10 +3,11 @@ package error_const
 import "fmt"
 
 var (
-	INTERNAL_SERVER_ERROR = fmt.Errorf("internal_server_error")
-	BAD_REQUEST           = fmt.Errorf("bad_request")
-	INVALID_AUTH          = fmt.Errorf("invalid_auth")
-	UNAUTHORIZED          = fmt.Errorf("unauthorized")
+	INTERNAL_SERVER_ERROR  = fmt.Errorf("internal_server_error")
+	BAD_REQUEST            = fmt.Errorf("bad_request")
+	INVALID_AUTH           = fmt.Errorf("invalid_auth")
+	UNAUTHORIZED           = fmt.Errorf("unauthorized")
+	INVALID_COMMON_REQUEST = fmt.Errorf("invalid_common_request")
 )
 
 type ErrorObj struct {
@@ -41,6 +42,12 @@ var (
 			Code:       "unauthorized",
 			Title:      "unauthorized",
 			Message:    "unauthorized",
+		},
+		INVALID_COMMON_REQUEST: {
+			StatusCode: 500,
+			Code:       "invalid_common_request",
+			Title:      "invalid common request",
+			Message:    "invalid common request",
 		},
 	}
 )

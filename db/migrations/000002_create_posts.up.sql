@@ -1,0 +1,11 @@
+CREATE TABLE posts (
+  id BIGSERIAL PRIMARY KEY,
+  content TEXT NOT NULL,
+  user_id UUID NOT NULL,
+
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
+  deleted_at TIMESTAMP WITH TIME ZONE
+);
+
+ALTER TABLE posts ADD CONSTRAINT fk_posts_user_id FOREIGN KEY (user_id) REFERENCES users(id);

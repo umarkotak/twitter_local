@@ -12,6 +12,8 @@ import (
 	"github.com/umarkotak/twitter_local/models"
 )
 
+// Ref: https://github.com/antonfisher/nested-logrus-formatter
+
 // Formatter - logrus formatter, implements logrus.Formatter
 type Formatter struct {
 	// FieldsOrder - default: fields sorted alphabetically
@@ -110,9 +112,12 @@ func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b.WriteString("\x1b[0m")
 	}
 
-	commonReq, ok := entry.Context.Value("common_request").(models.CommonRequest)
-	if !ok {
-		commonReq = models.CommonRequest{}
+	commonReq := models.CommonRequest{}
+	if entry.Context != nil {
+		_, ok := entry.Context.Value("common_request").(models.CommonRequest)
+		if ok {
+			commonReq = entry.Context.Value("common_request").(models.CommonRequest)
+		}
 	}
 
 	b.WriteString(fmt.Sprintf("\x1b[%dm", levelColor))

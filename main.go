@@ -10,6 +10,7 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/umarkotak/twitter_local/config"
 	"github.com/umarkotak/twitter_local/controllers/ping_controller"
+	"github.com/umarkotak/twitter_local/controllers/post_controller"
 	"github.com/umarkotak/twitter_local/controllers/user_controller"
 	_ "github.com/umarkotak/twitter_local/docs"
 	"github.com/umarkotak/twitter_local/middlewares"
@@ -71,7 +72,12 @@ func main() {
 	r.GET("/user/profile", user_controller.MyProfile)
 	r.Use(middlewares.AuthUser()).GET("/user/:username/profile", user_controller.ProfileByUsername)
 
-	// TODO: CRUD POST
+	rUser := r.Use(middlewares.AuthUser())
+	rUser.GET("/user/posts/:id")
+	rUser.GET("/user/posts")
+	rUser.POST("/user/posts", post_controller.Create)
+	rUser.PUT("/user/posts/:id")
+	rUser.DELETE("/user/posts/:id")
 
 	// docs: https://github.com/swaggo/swag
 	// open: /swagger/index.html
