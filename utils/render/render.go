@@ -1,13 +1,11 @@
 package render
 
 import (
-	"context"
-
 	"github.com/gin-gonic/gin"
 	"github.com/umarkotak/twitter_local/error_const"
 )
 
-func Success(ctx context.Context, c *gin.Context, data interface{}) {
+func Success(c *gin.Context, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
 	}
@@ -19,7 +17,7 @@ func Success(ctx context.Context, c *gin.Context, data interface{}) {
 	c.JSON(200, body)
 }
 
-func Error(ctx context.Context, c *gin.Context, err error, customMessage string) {
+func Error(c *gin.Context, err error, customMessage string) {
 	errObj, found := error_const.ERR_MAP[err]
 	if !found {
 		errObj = error_const.ERR_MAP[error_const.INTERNAL_SERVER_ERROR]

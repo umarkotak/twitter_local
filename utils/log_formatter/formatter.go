@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/sirupsen/logrus"
+	"github.com/umarkotak/twitter_local/models"
 )
 
 // Formatter - logrus formatter, implements logrus.Formatter
@@ -109,8 +110,15 @@ func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b.WriteString("\x1b[0m")
 	}
 
-	// write message
+	commonReq, ok := entry.Context.Value("common_request").(models.CommonRequest)
+	if !ok {
+		commonReq = models.CommonRequest{}
+	}
+
 	b.WriteString(fmt.Sprintf("\x1b[%dm", levelColor))
+	b.WriteString(fmt.Sprintf("[%+v] ", commonReq.RequestID))
+
+	// write message
 	if f.TrimMessages {
 		b.WriteString(strings.TrimSpace(entry.Message))
 	} else {

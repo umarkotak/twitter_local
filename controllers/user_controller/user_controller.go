@@ -20,19 +20,17 @@ import (
 //	@Success	200		{object}	interface{}
 //	@Router		/users/register [post]
 func Register(c *gin.Context) {
-	ctx := c.Request.Context()
-
 	params := request_contract.UserRegister{}
 	err := c.BindJSON(&params)
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
+		logrus.WithContext(c).Error(err)
 		c.JSON(400, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	err = user_service.Register(ctx, params)
+	err = user_service.Register(c, params)
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
+		logrus.WithContext(c).Error(err)
 
 		if _, ok := err.(validator.ValidationErrors); ok {
 			c.JSON(400, map[string]interface{}{"error": err.Error()})
@@ -43,46 +41,53 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	render.Success(ctx, c, nil)
+	render.Success(c, nil)
 }
 
 func Login(c *gin.Context) {
-	ctx := c.Request.Context()
-
 	params := request_contract.UserLogin{}
 	err := c.BindJSON(&params)
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
-		render.Error(ctx, c, err, "")
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
 		return
 	}
 
-	response, err := user_service.Login(ctx, params)
+	response, err := user_service.Login(c, params)
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
-		render.Error(ctx, c, err, "")
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
 		return
 	}
 
-	render.Success(ctx, c, response)
+	render.Success(c, response)
 }
 
 func MyProfile(c *gin.Context) {
-	ctx := c.Request.Context()
-
-	user, err := jwt_auth.DecodeUserAuthToken(ctx, c.GetHeader("Authorization"))
+	user, err := jwt_auth.DecodeUserAuthToken(c, c.GetHeader("Authorization"))
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
-		render.Error(ctx, c, err, "")
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
 		return
 	}
 
-	response, err := user_service.GetByID(ctx, user.ID)
+	response, err := user_service.GetByID(c, user.ID)
 	if err != nil {
-		logrus.WithContext(ctx).Error(err)
-		render.Error(ctx, c, err, "")
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
 		return
 	}
 
-	render.Success(ctx, c, response)
+	render.Success(c, response)
+}
+
+func ProfileByUsername(c *gin.Context) {
+	response, err := user_service.GetByUsername(c, c.Param("username"))
+	if err != nil {
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
+		return
+	}
+
+	render.Success(c, response)
 }

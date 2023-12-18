@@ -6,6 +6,7 @@ var (
 	INTERNAL_SERVER_ERROR = fmt.Errorf("internal_server_error")
 	BAD_REQUEST           = fmt.Errorf("bad_request")
 	INVALID_AUTH          = fmt.Errorf("invalid_auth")
+	UNAUTHORIZED          = fmt.Errorf("unauthorized")
 )
 
 type ErrorObj struct {
@@ -34,6 +35,12 @@ var (
 			Code:       "invalid_auth",
 			Title:      "invalid auth",
 			Message:    "bad request",
+		},
+		UNAUTHORIZED: {
+			StatusCode: 401,
+			Code:       "unauthorized",
+			Title:      "unauthorized",
+			Message:    "unauthorized",
 		},
 	}
 )
