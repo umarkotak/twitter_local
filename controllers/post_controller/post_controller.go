@@ -15,7 +15,7 @@ func Create(c *gin.Context) {
 	err := c.BindJSON(&params)
 	if err != nil {
 		logrus.WithContext(c).Error(err)
-		c.JSON(400, map[string]interface{}{"error": err.Error()})
+		render.Error(c, err, "")
 		return
 	}
 
@@ -23,6 +23,7 @@ func Create(c *gin.Context) {
 	commonReq, ok := commonReqInterface.(models.CommonRequest)
 	if !ok {
 		render.Error(c, error_const.INVALID_COMMON_REQUEST, "")
+		return
 	}
 
 	params.UserID = commonReq.User.ID
@@ -38,6 +39,10 @@ func Create(c *gin.Context) {
 }
 
 func GetListForUser(c *gin.Context) {
+	// Common flow pembuatan API
+	// 1. Buat repository layer nya - select from posts where ...
+	// 2. Buat service layer nya
+	// 3. Buat controller layer nya
 
 }
 
