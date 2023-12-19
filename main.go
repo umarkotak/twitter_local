@@ -64,6 +64,7 @@ func main() {
 	r.Use(gin.Recovery())
 	r.Use(middlewares.RequestID())
 	r.Use(middlewares.LogRequest())
+	r.Use(middlewares.Cors())
 
 	rUser := r.Group("/", middlewares.AuthUser())
 

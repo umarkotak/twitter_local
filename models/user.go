@@ -19,3 +19,6 @@ type (
 		DeletedAt sql.NullTime   `db:"deleted_at"`
 	}
 )
+
+func tes() {
+}

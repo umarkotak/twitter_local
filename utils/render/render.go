@@ -14,6 +14,7 @@ func Success(c *gin.Context, data interface{}) {
 		"data":    data,
 		"success": true,
 	}
+
 	c.JSON(200, body)
 }
 
