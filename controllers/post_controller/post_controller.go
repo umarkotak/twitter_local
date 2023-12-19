@@ -38,12 +38,30 @@ func Create(c *gin.Context) {
 	render.Success(c, response)
 }
 
-func GetListForUser(c *gin.Context) {
+func GetMyPosts(c *gin.Context) {
 	// Common flow pembuatan API
 	// 1. Buat repository layer nya - select from posts where ...
 	// 2. Buat service layer nya
 	// 3. Buat controller layer nya
+	commonReqInterface, _ := c.Get("common_request")
+	commonReq, ok := commonReqInterface.(models.CommonRequest)
+	if !ok {
+		render.Error(c, error_const.INVALID_COMMON_REQUEST, "")
+		return
+	}
 
+	params := request_contract.PostList{
+		UserID: commonReq.User.ID,
+	}
+
+	response, err := post_service.GetByUserID(c, params)
+	if err != nil {
+		logrus.WithContext(c).Error(err)
+		render.Error(c, err, "")
+		return
+	}
+
+	render.Success(c, response)
 }
 
 func GetList(c *gin.Context) {

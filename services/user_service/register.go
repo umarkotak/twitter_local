@@ -33,5 +33,7 @@ func Register(ctx context.Context, params request_contract.UserRegister) error {
 		return err
 	}
 
+	// TODO: Kirim notifikasi selamat datang ke email ketika user sudah mendaftar
+
 	return nil
 }

@@ -63,6 +63,9 @@ func main() {
 	r := gin.Default()
 	r.Use(gin.Recovery())
 	r.Use(middlewares.RequestID())
+	r.Use(middlewares.LogRequest())
+
+	rUser := r.Group("/", middlewares.AuthUser())
 
 	r.GET("/ping", ping_controller.Ping)
 
@@ -70,11 +73,10 @@ func main() {
 	r.POST("/users/login", user_controller.Login)
 
 	r.GET("/user/profile", user_controller.MyProfile)
-	r.Use(middlewares.AuthUser()).GET("/user/:username/profile", user_controller.ProfileByUsername)
 
-	rUser := r.Use(middlewares.AuthUser())
+	rUser.GET("/user/:username/profile", user_controller.ProfileByUsername)
 	rUser.GET("/user/posts/:id")
-	rUser.GET("/user/posts")
+	rUser.GET("/user/posts", post_controller.GetMyPosts)
 	rUser.POST("/user/posts", post_controller.Create)
 	rUser.PUT("/user/posts/:id")
 	rUser.DELETE("/user/posts/:id")
