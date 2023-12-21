@@ -24,7 +24,7 @@ import (
 
 // config.Get().MasterDB.NamedExecContext() => result
 
-func GetByUserID(ctx context.Context, userID string) ([]response_contract.Post, error) {
+func GetByUserID(ctx context.Context, userID int64) ([]response_contract.Post, error) {
 	rows, err := config.Get().MasterDB.QueryContext(ctx, `
 		SELECT
 			p.id,

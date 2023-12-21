@@ -8,7 +8,7 @@ import (
 	"github.com/umarkotak/twitter_local/repositories/user_repository"
 )
 
-func GetByID(ctx context.Context, userID string) (response_contract.UserMyProfile, error) {
+func GetByID(ctx context.Context, userID int64) (response_contract.UserMyProfile, error) {
 	user, err := user_repository.GetByID(ctx, userID)
 	if err != nil {
 		logrus.WithContext(ctx).Error(err)

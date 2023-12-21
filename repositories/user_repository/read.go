@@ -36,7 +36,7 @@ func GetByUsername(ctx context.Context, username string) (models.User, error) {
 	return user, nil
 }
 
-func GetByID(ctx context.Context, id string) (models.User, error) {
+func GetByID(ctx context.Context, id int64) (models.User, error) {
 	user := models.User{}
 
 	err := config.Get().MasterDB.GetContext(ctx, &user, `

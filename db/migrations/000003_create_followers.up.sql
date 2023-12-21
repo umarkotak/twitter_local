@@ -1,8 +1,8 @@
 CREATE TABLE followers (
   id BIGSERIAL PRIMARY KEY,
 
-  user_id UUID NOT NULL,
-  following_user_id UUID NOT NULL,
+  user_id BIGINT NOT NULL,
+  following_user_id BIGINT NOT NULL,
 
   created_at TIMESTAMP WITH TIME ZONE NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL,

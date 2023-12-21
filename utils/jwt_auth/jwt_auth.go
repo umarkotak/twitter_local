@@ -3,6 +3,7 @@ package jwt_auth
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -15,7 +16,7 @@ var signKey = []byte("some-random-secret-singing-key")
 
 type UserClaims struct {
 	jwt.RegisteredClaims
-	UserID   string `json:"user_id"`
+	UserID   int64  `json:"user_id"`
 	Name     string `json:"name"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -67,8 +68,14 @@ func DecodeUserAuthToken(ctx context.Context, jwtToken string) (models.User, err
 		return models.User{}, err
 	}
 
+	userID, err := strconv.ParseInt(fmt.Sprint(claims["user_id"]), 10, 64)
+	if err != nil {
+		logrus.WithContext(ctx).Error(err)
+		return models.User{}, err
+	}
+
 	return models.User{
-		ID:       claims["user_id"].(string),
+		ID:       userID,
 		Name:     claims["name"].(string),
 		Username: claims["username"].(string),
 		Email:    claims["email"].(string),
